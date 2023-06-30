@@ -4,7 +4,10 @@
       <div class="col-12 col-md-8 col-lg-6 col-xl-7">
         <div class="card bg-dark text-white" style="border-radius: 1rem">
           <div class="card-body p-5 text-center">
-            <form @submit.prevent="" class="mb-md-5 mt-md-4 pb-5">
+            <form
+              @submit.prevent="create(signUpForm)"
+              class="mb-md-5 mt-md-4 pb-5"
+            >
               <h2 class="font-weight-bold mb-2 text-uppercase">Sign Up</h2>
               <p class="text-white-50 mb-5">
                 Please enter your login and password!
@@ -12,10 +15,20 @@
 
               <div class="form-outline form-white mb-4">
                 <input
+                  type="text"
+                  id="typeUsernameX"
+                  class="form-control form-control-lg bg-dark text-light form-input"
+                  placeholder="Username"
+                  v-model="signUpForm.username"
+                />
+              </div>
+              <div class="form-outline form-white mb-4">
+                <input
                   type="email"
                   id="typeEmailX"
                   class="form-control form-control-lg bg-dark text-light form-input"
                   placeholder="Email"
+                  v-model="signUpForm.email"
                 />
               </div>
 
@@ -25,6 +38,16 @@
                   id="typePasswordX"
                   class="form-control form-control-lg bg-dark text-light form-input"
                   placeholder="Password"
+                  v-model="signUpForm.password"
+                />
+              </div>
+              <div class="form-outline form-white mb-4">
+                <input
+                  type="password"
+                  id="typePassword2X"
+                  class="form-control form-control-lg bg-dark text-light form-input"
+                  placeholder="Confirm Password"
+                  v-model="signUpForm.password2"
                 />
               </div>
 
@@ -48,7 +71,7 @@
                 ></a>
               </div>
 
-              <div class="pt-4">
+              <div class="pt-4N">
                 <div
                   class="text-white-50 font-weight-bold cursor-pointer"
                   @click="$emit('changeStep', 1)"
@@ -64,12 +87,38 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "HelloWorld",
-  props: {
-    msg: String,
-  },
+<script setup>
+import { ref } from "vue";
+import fetchApi from "@/common/fetch";
+import useAuthStore from "@/stores/auth/authStore";
+
+// eslint-disable-next-line
+const emit = defineEmits(["changeStep"]);
+const store = useAuthStore();
+
+console.log(store);
+const signUpForm = ref({
+  email: null,
+  username: null,
+  password: null,
+  password2: null,
+});
+
+const create = async () => {
+  if (
+    signUpForm.value &&
+    Object.values(signUpForm.value).every((val) => !!val)
+  ) {
+    try {
+      await fetchApi({
+        endpoint: "register/",
+        body: signUpForm.value,
+      });
+      emit("changeStep", 1);
+    } catch (err) {
+      console.error(err);
+    }
+  }
 };
 </script>
 
