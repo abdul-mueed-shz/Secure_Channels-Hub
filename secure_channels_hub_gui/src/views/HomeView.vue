@@ -1,61 +1,114 @@
 <template>
-  <div class="vh-100 gradient-custom">
+  <section
+    class="vh-100 d-flex flex-column justify-content-center align-items-center w-100"
+  >
+    <!-- class="col-12 col-md-8 col-lg-6 col-xl-5" -->
+
     <div
-      class="text-white h6 d-flex justify-content-center align-items-center fixed-top"
+      class="cursor-pointer d-flex h6 text-white font-weight-bold justify-content-end pr-3 pt-2 fixed-top"
+      @click="logout"
     >
-      <div
-        class="bg-success p-3 mt-3"
-        style="max-width: 30rem; border-radius: 12px"
-      >
-        Successfully created
+      <i class="pr-1 fas fa-sign-out-alt fa-lg"></i>
+      Logout
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-9">
+          <div class="pt-4">
+            <div class="pb-3 h2 font-weight-bold username">
+              {{ auth.user?.username }}
+            </div>
+            <div class="form-outline form-white mb-4">
+              <input
+                type="message"
+                id="typeRoomL"
+                class="form-control form-control-lg bg-dark text-light form-input"
+                placeholder="Enter Room Name"
+              />
+            </div>
+          </div>
+          <div class="w-100 d-flex justify-content-center">
+            <textarea class="w-100" id="chat-log" readonly></textarea><br />
+          </div>
+          <div class="pt-4">
+            <div class="form-outline form-white mb-4">
+              <input
+                type="message"
+                id="typeMessageL"
+                class="form-control form-control-lg bg-dark text-light form-input"
+                placeholder="Send Message"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-3 pt-5">
+          <div
+            class="h-100 card bg-dark text-white"
+            style="border-radius: 1rem"
+          >
+            <div class="card-body p-5 text-center">
+              <div class="font-weight-bold h5">Rooms</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <SignUpView v-if="authStep === 0" @changeStep="changeStep" />
-    <LoginView v-else-if="authStep === 1" @changeStep="changeStep" />
-  </div>
+  </section>
 </template>
 
 <script setup>
-import LoginView from "@/components/LoginView.vue";
-import SignUpView from "@/components/SignUpView.vue";
-import { ref } from "vue";
+import { ROUTE_CONSTANTS } from "@/common/constants/routes";
+import { useAuthStore } from "@/stores/auth/authStore";
+import { storeToRefs } from "pinia";
+import {
+  onMounted,
+  // ref
+} from "vue";
+import { useRouter } from "vue-router";
 
-const authStep = ref(1);
-const changeStep = (e) => {
-  authStep.value = e;
+const router = useRouter();
+const store = useAuthStore();
+const { auth } = storeToRefs(store);
+const { setAuthDetails } = store;
+
+// let webSocket = ref(null);
+
+const logout = () => {
+  setAuthDetails({});
+  router.push(ROUTE_CONSTANTS.AUTH.PATH);
 };
+onMounted(() => {
+  if (!Object.keys(auth.value).length) {
+    router.push({ path: ROUTE_CONSTANTS.AUTH.PATH });
+  }
+  // webSocket.value = new WebSocket("ws://127.0.0.1:8000/ws/chat/testroom/");
+});
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss">
-.notif-anim {
-  animation: fadeIn 10s;
+<style lang="scss" scoped>
+.username {
+  color: rgb(146, 146, 146);
 }
-@keyframes fadeIn {
-}
-.gradient-custom {
-  /* fallback for old browsers */
-  background: #6a11cb;
-
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(
-    to right,
-    rgba(106, 17, 203, 1),
-    rgba(37, 117, 252, 1)
-  );
-
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(
-    to right,
-    rgba(106, 17, 203, 1),
-    rgba(37, 117, 252, 1)
-  );
-}
-.form-input::placeholder {
+#chat-log {
+  background-color: rgb(56, 60, 68);
   color: white;
-  opacity: 1; /* Firefox */
+  border-radius: 1rem;
+  padding: 1rem;
+  border: none;
+  height: 50dvh;
+  resize: none;
 }
-.cursor-pointer {
-  cursor: pointer;
+#chat-log:focus {
+  outline: none;
+}
+.rounded-borders_none {
+  border: none;
+  border-radius: 2rem;
+}
+#typeMessageL {
+  @extend .rounded-borders_none;
+}
+#typeRoomL {
+  @extend .rounded-borders_none;
 }
 </style>

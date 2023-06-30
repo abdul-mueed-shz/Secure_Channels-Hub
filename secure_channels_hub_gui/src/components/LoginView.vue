@@ -4,7 +4,7 @@
       <div class="col-12 col-md-8 col-lg-6 col-xl-7">
         <div class="card bg-dark text-white" style="border-radius: 1rem">
           <div class="card-body p-5 text-center">
-            <form @submit.prevent="" class="mb-md-5 mt-md-4 pb-5">
+            <form @submit.prevent="login" class="mb-md-5 mt-md-4 pb-5">
               <h2 class="font-weight-bold mb-2 text-uppercase">Login</h2>
               <p class="text-white-50 mb-5">
                 Please enter your login and password!
@@ -12,19 +12,21 @@
 
               <div class="form-outline form-white mb-4">
                 <input
-                  type="email"
-                  id="typeEmailX"
+                  type="username"
+                  id="typeUsernameL"
                   class="form-control form-control-lg bg-dark text-light form-input"
-                  placeholder="Email"
+                  placeholder="Username"
+                  v-model="loginForm.username"
                 />
               </div>
 
               <div class="form-outline form-white mb-4">
                 <input
                   type="password"
-                  id="typePasswordX"
+                  id="typePasswordL"
                   class="form-control form-control-lg bg-dark text-light form-input"
                   placeholder="Password"
+                  v-model="loginForm.password"
                 />
               </div>
 
@@ -65,12 +67,38 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "HelloWorld",
-  props: {
-    msg: String,
-  },
+<script setup>
+import { ref } from "vue";
+import fetchApi from "@/common/fetch";
+import { useAuthStore } from "@/stores/auth/authStore";
+import { useRouter } from "vue-router";
+import { ROUTE_CONSTANTS } from "@/common/constants/routes";
+
+const router = useRouter();
+const store = useAuthStore();
+
+const { setAuthDetails } = store;
+
+const loginForm = ref({
+  username: null,
+  password: null,
+});
+const login = async () => {
+  if (loginForm.value && Object.values(loginForm.value).every((val) => !!val)) {
+    fetchApi({
+      endpoint: "login/",
+      body: loginForm.value,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        delete res.message;
+        setAuthDetails(res);
+        router.push(ROUTE_CONSTANTS.HOME.PATH);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 };
 </script>
 
