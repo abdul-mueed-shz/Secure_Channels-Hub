@@ -1,4 +1,4 @@
-# secure_channel_hub_gui
+# secure_channels_hub_gui
 
 ## Project setup
 ```

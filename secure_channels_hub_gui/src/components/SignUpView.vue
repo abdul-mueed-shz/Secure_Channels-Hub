@@ -90,9 +90,9 @@
 <script setup>
 import { ref } from "vue";
 import fetchApi from "@/common/fetch";
-import useAuthStore from "@/stores/auth/authStore";
+import { useAuthStore } from "@/stores/auth/authStore";
 
-// eslint-disable-next-line
+// eslint-disable-next-line no-undef
 const emit = defineEmits(["changeStep"]);
 const store = useAuthStore();
 

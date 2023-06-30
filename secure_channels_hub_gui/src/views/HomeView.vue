@@ -1,5 +1,15 @@
 <template>
   <div class="vh-100 gradient-custom">
+    <div
+      class="text-white h6 d-flex justify-content-center align-items-center fixed-top"
+    >
+      <div
+        class="bg-success p-3 mt-3"
+        style="max-width: 30rem; border-radius: 12px"
+      >
+        Successfully created
+      </div>
+    </div>
     <SignUpView v-if="authStep === 0" @changeStep="changeStep" />
     <LoginView v-else-if="authStep === 1" @changeStep="changeStep" />
   </div>
@@ -18,6 +28,11 @@ const changeStep = (e) => {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+.notif-anim {
+  animation: fadeIn 10s;
+}
+@keyframes fadeIn {
+}
 .gradient-custom {
   /* fallback for old browsers */
   background: #6a11cb;
