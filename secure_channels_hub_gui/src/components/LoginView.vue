@@ -89,7 +89,6 @@ const login = async () => {
       endpoint: "login/",
       body: loginForm.value,
     })
-      .then((res) => res.json())
       .then((res) => {
         delete res.message;
         setAuthDetails(res);

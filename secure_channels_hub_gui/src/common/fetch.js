@@ -14,10 +14,22 @@ export default async function ({
   body = null,
   cache = "default",
 }) {
-  return await fetch(baseUrl + endpoint, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : null,
-    cache,
-  });
+  try {
+    const res = await fetch(baseUrl + endpoint, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : null,
+      cache,
+    });
+    const jsonRes = await res.json();
+    if (
+      jsonRes["detail"] &&
+      jsonRes["detail"].includes("credentials were not provided")
+    ) {
+      throw new Error(jsonRes["detail"]);
+    }
+    return jsonRes;
+  } catch (err) {
+    throw new Error(err);
+  }
 }

@@ -13,35 +13,76 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-9">
+        <div class="col-12">
           <div class="pt-4">
             <div class="pb-3 h2 font-weight-bold username">
               {{ auth.user?.username }}
             </div>
-            <div class="form-outline form-white mb-4">
-              <input
-                type="message"
-                id="typeRoomL"
-                class="form-control form-control-lg bg-dark text-light form-input"
-                placeholder="Enter Room Name"
-              />
+            <div class="row">
+              <div class="col-lg-10 col-sm-12 form-outline form-white mb-4">
+                <input
+                  type="message"
+                  id="typeRoomL"
+                  class="form-control form-control-lg bg-dark text-light form-input"
+                  placeholder="Enter Room Name"
+                  v-model="roomName"
+                  :readonly="hasJoined"
+                />
+              </div>
+              <div class="col-lg-2 col-sm-12 form-outline form-white mb-4">
+                <button
+                  v-if="!hasJoined"
+                  type="button"
+                  class="rounded-pill w-100 btn btn-secondary btn-lg"
+                  @click="joinRoom"
+                >
+                  Join Room
+                </button>
+                <button
+                  v-else
+                  type="button"
+                  class="rounded-pill w-100 btn btn-secondary btn-lg"
+                  @click="closeScoket"
+                >
+                  Leave
+                </button>
+              </div>
             </div>
           </div>
           <div class="w-100 d-flex justify-content-center">
-            <textarea class="w-100" id="chat-log" readonly></textarea><br />
+            <textarea
+              ref="chatLog"
+              class="w-100"
+              id="chat-log"
+              readonly
+            ></textarea
+            ><br />
           </div>
           <div class="pt-4">
-            <div class="form-outline form-white mb-4">
-              <input
-                type="message"
-                id="typeMessageL"
-                class="form-control form-control-lg bg-dark text-light form-input"
-                placeholder="Send Message"
-              />
+            <div class="row">
+              <div class="col-lg-10 col-sm-12 form-outline form-white mb-4">
+                <input
+                  type="message"
+                  id="typeSendM"
+                  class="form-control form-control-lg bg-dark text-light form-input"
+                  placeholder="Enter Message"
+                  v-model="message"
+                  :readonly="!hasJoined"
+                />
+              </div>
+              <div class="col-lg-2 col-sm-12 form-outline form-white mb-4">
+                <button
+                  type="button"
+                  class="rounded-pill w-100 btn btn-secondary btn-lg"
+                  @click="sendMessage"
+                >
+                  Send
+                </button>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-3 pt-5">
+        <div v-if="false" class="col-3 pt-5">
           <div
             class="h-100 card bg-dark text-white"
             style="border-radius: 1rem"
@@ -60,18 +101,19 @@
 import { ROUTE_CONSTANTS } from "@/common/constants/routes";
 import { useAuthStore } from "@/stores/auth/authStore";
 import { storeToRefs } from "pinia";
-import {
-  onMounted,
-  // ref
-} from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const store = useAuthStore();
 const { auth } = storeToRefs(store);
 const { setAuthDetails } = store;
+const chatLog = ref(null);
+const message = ref(null);
+const roomName = ref(null);
+const hasJoined = ref(0);
 
-// let webSocket = ref(null);
+let webSocket = ref(null);
 
 const logout = () => {
   setAuthDetails({});
@@ -81,8 +123,53 @@ onMounted(() => {
   if (!Object.keys(auth.value).length) {
     router.push({ path: ROUTE_CONSTANTS.AUTH.PATH });
   }
-  // webSocket.value = new WebSocket("ws://127.0.0.1:8000/ws/chat/testroom/");
 });
+
+window.onbeforeunload = function () {
+  webSocket.value.onclose = function () {};
+  webSocket.value.close();
+};
+const joinRoom = () => {
+  if (!roomName.value) {
+    return;
+  }
+  webSocketConfig();
+};
+const webSocketConfig = () => {
+  webSocket.value = new WebSocket(
+    `ws://127.0.0.1:8000/ws/chat/${roomName.value}/?token=${auth.value.access}`
+  );
+  webSocket.value.onopen = () => {
+    hasJoined.value = 1;
+  };
+  webSocket.value.onclose = () => {
+    hasJoined.value = 0;
+  };
+  webSocket.value.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    if (data.type === "heartbeat") {
+      webSocket.value.send(
+        JSON.stringify({
+          type: "heartbeat",
+          message: "pong",
+        })
+      );
+      return;
+    }
+    chatLog.value.value += data.message + "\n";
+  };
+};
+const sendMessage = () => {
+  webSocket.value.send(
+    JSON.stringify({
+      message: message.value,
+    })
+  );
+  message.value = "";
+};
+const closeScoket = () => {
+  webSocket.value.close();
+};
 </script>
 
 <style lang="scss" scoped>
@@ -105,7 +192,7 @@ onMounted(() => {
   border: none;
   border-radius: 2rem;
 }
-#typeMessageL {
+#typeSendM {
   @extend .rounded-borders_none;
 }
 #typeRoomL {
