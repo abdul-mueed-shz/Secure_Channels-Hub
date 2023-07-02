@@ -59,14 +59,14 @@ This is a full-stack project built with Vue.js and Django Rest Framework. The pr
 - Backend Setup
 
 1. Clone the repository: `git clone https://github.com/your-username/your-repo.git`
-2. Navigate to the backend directory: `cd backend`
-3. Install dependencies: `pip install -r requirements.txt`
+2. Navigate to the backend directory: `cd secure_channel_hub_api`
+3. Install dependencies: `pip install -r requirements/base.txt`
 4. Apply database migrations: `python manage.py migrate`
 5. Start the Django development server: `python manage.py runserver`
 
 - Frontend Setup
 
-1. Navigate to the frontend directory: `cd frontend`
+1. Navigate to the frontend directory: `cd secure_channels_hub_gui`
 2. Install dependencies: `npm install`
 3. Start the development server: `npm run serve`
 
