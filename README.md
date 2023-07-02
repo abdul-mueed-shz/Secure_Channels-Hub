@@ -16,6 +16,7 @@ This is a full-stack project built with Vue.js and Django Rest Framework. The pr
 - Automatic connection management and heartbeat functionality to ensure active connections
 - Custom middleware for authentication and request processing
 - Redis for caching and session management
+- Responsive Design
 
 
 ## Technologies used
