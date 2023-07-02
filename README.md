@@ -62,7 +62,7 @@ The project follows a client-server architecture, with the frontend built using 
 
 - Prerequisites
 
-1. Docker: Install Docker from the official website ([https://www.docker.com/](https://www.docker.com/))
+1. Docker: Install Docker from the official website ([https://www.docker.com/](https://www.docker.com/)) and set up the Redis server.
 
 
 
