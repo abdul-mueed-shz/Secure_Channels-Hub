@@ -30,17 +30,32 @@ This is a full-stack project built with Vue.js and Django Rest Framework. The pr
   <img src="https://img.shields.io/badge/Pinia_Persistent-yellow?style=for-the-badge&logo=pinia&logoColor=red&color=orange" />
   <img src="https://img.shields.io/badge/json-5E5C5C?style=for-the-badge&logo=json&logoColor=white" />
   <img src="https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D" />  
-  <img src="https://img.shields.io/badge/Django_Channels-blue?style=for-the-badge&logo=django&logoColor=yellow&color=blue" />  
+  <img src="https://img.shields.io/badge/Django_Channels-blue?style=for-the-badge&logo=django&logoColor=yellow&color=blue" />
+  <img src="https://img.shields.io/badge/Bootstrap-blue?style=for-the-badge&logo=bootstrap&logoColor=white&color=purple" />
+   <img src="https://img.shields.io/badge/Font_Awesome-purple?style=for-the-badge&logo=fontawesome&logoColor=white&color=2321b0" />
+  
 </div>
 
 <h2><img  width="30px" src="https://www.animatedimages.org/data/media/491/animated-television-image-0115.gif" border="0" alt="animated-television-image-0115" />
   Screenshots</h2>
 
+![image](https://github.com/Abdul-Mueed-Shahbaz/Secure_Channels-Hub/assets/52679916/3a889a29-4a23-4304-89a9-01388d739472)
+![image](https://github.com/Abdul-Mueed-Shahbaz/Secure_Channels-Hub/assets/52679916/da1ff96b-4fe9-45e1-b724-82650213a0a3)
+![image](https://github.com/Abdul-Mueed-Shahbaz/Secure_Channels-Hub/assets/52679916/274d839b-2526-42f2-af70-f6ed0d5a5a9a)
+![image](https://github.com/Abdul-Mueed-Shahbaz/Secure_Channels-Hub/assets/52679916/ef942bc8-24db-4784-9412-616f03cd37f1)
+![image](https://github.com/Abdul-Mueed-Shahbaz/Secure_Channels-Hub/assets/52679916/6a2ca107-3d77-4c04-b07e-4a4501731ccc)
+![image](https://github.com/Abdul-Mueed-Shahbaz/Secure_Channels-Hub/assets/52679916/3a2f8cb9-6d77-468e-8637-3852982165b3)
+
+
+## Additional Notes
+
+- For more information about Redis, visit the [Redis official website](https://redis.io/).
+- Learn more about Pinia, the state management library, [here](https://pinia.esm.dev/).
+- The threading implementation is used to start a coroutine that sends a ping message to the client and waits for a pong response. If the client does not respond within a specified timeout, it is disconnected to ensure connection reliability.
 
 <h2><img width="30px" src="https://www.animatedimages.org/data/media/318/animated-computer-smiley-image-0080.gif" border="0" alt="animated-computer-smiley-image-0080" />  Setup:</h2>
 
-
-## Backend Setup
+- Backend Setup
 
 1. Clone the repository: `git clone https://github.com/your-username/your-repo.git`
 2. Navigate to the backend directory: `cd backend`
@@ -48,7 +63,7 @@ This is a full-stack project built with Vue.js and Django Rest Framework. The pr
 4. Apply database migrations: `python manage.py migrate`
 5. Start the Django development server: `python manage.py runserver`
 
-## Frontend Setup
+- Frontend Setup
 
 1. Navigate to the frontend directory: `cd frontend`
 2. Install dependencies: `npm install`
