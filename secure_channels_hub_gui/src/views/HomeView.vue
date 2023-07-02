@@ -154,6 +154,7 @@ const webSocketConfig = () => {
           message: "pong",
         })
       );
+      console.log("heartbeat");
       return;
     }
     chatLog.value.value += data.message + "\n";
