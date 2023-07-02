@@ -7,6 +7,10 @@
 
 This is a full-stack project built with Vue.js and Django Rest Framework. The project implements web sockets using Django Channels for real-time communication. The backend provides JWT authentication and RESTful APIs for user authentication (login, register, logout). Redis is used as a backing storage for caching and session management.
 
+## Architecture
+
+The project follows a client-server architecture, with the frontend built using Vue.js and the backend developed with Django Rest Framework. Communication between the client and server is established using WebSockets via Django Channels. Redis serves as the backing storage for managing WebSocket connections and caching data.
+
 ## Features
 
 - JWT authentication for secure user login and registration
@@ -56,6 +60,12 @@ This is a full-stack project built with Vue.js and Django Rest Framework. The pr
 
 <h2><img width="30px" src="https://www.animatedimages.org/data/media/318/animated-computer-smiley-image-0080.gif" border="0" alt="animated-computer-smiley-image-0080" />  Setup:</h2>
 
+- Prerequisites
+
+1. Docker: Install Docker from the official website ([https://www.docker.com/](https://www.docker.com/))
+
+
+
 - Backend Setup
 
 1. Clone the repository: `git clone https://github.com/your-username/your-repo.git`
@@ -63,6 +73,8 @@ This is a full-stack project built with Vue.js and Django Rest Framework. The pr
 3. Install dependencies: `pip install -r requirements/base.txt`
 4. Apply database migrations: `python manage.py migrate`
 5. Start the Django development server: `python manage.py runserver`
+6. Set the Redis server configuration in `base.py` or your preferred configuration file.
+7. Start the Redis server using Docker: `docker run -p 6379:6379 -d redis`
 
 - Frontend Setup
 
